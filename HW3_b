@@ -1,0 +1,57 @@
+import numpy as np
+
+import matplotlib.pyplot as plt
+import math
+
+def build_E_example(n_tiles):
+    xx, yy = np.meshgrid(range(n_tiles), range(n_tiles))
+    
+    vstick_start_x = int (n_tiles * 2 / 8)
+    vstick_stop_x = int (n_tiles * 3 / 8)
+    vstick_start_y = int (n_tiles * 1 / 8)
+    vstick_stop_y = int (n_tiles * 7 / 8)
+    vstick = (xx>=vstick_start_x) & (xx<vstick_stop_x) & (yy>=vstick_start_y) & (yy<vstick_stop_y)
+    
+    upstick_start_x = int (n_tiles * 2 / 8)
+    upstick_stop_x = int(n_tiles * 6 / 8)
+    upstick_start_y = int(n_tiles * 6 / 8)
+    upstick_stop_y = int(n_tiles * 7 / 8)
+    upstick = (xx>=upstick_start_x) & (xx<upstick_stop_x) & (yy>=upstick_start_y) & (yy<upstick_stop_y)
+    
+    midstick_start_x = int (n_tiles * 2 / 8)
+    midstick_stop_x = int(n_tiles * 5 / 8)
+    midstick_start_y = int(n_tiles * 4 / 8)
+    midstick_stop_y = int(n_tiles * 5 / 8)
+    midstick = (xx>=midstick_start_x) & (xx<midstick_stop_x) & (yy>=midstick_start_y) & (yy<midstick_stop_y)
+
+    botstick_start_x = int (n_tiles * 2 / 8)
+    botstick_stop_x = int (n_tiles * 6 / 8)
+    botstick_start_y = int (n_tiles * 1 / 8)
+    botstick_stop_y = int (n_tiles * 2 / 8)
+    botstick = (xx>=botstick_start_x) & (xx<botstick_stop_x) & (yy>=botstick_start_y) & (yy<botstick_stop_y)
+
+    capital_E = vstick | upstick | midstick | botstick
+
+    return capital_E
+
+n_tiles = 8
+charge = build_E_example(n_tiles)
+E = []
+for x in range(100):
+  a = []
+  for y in range(100):
+    x_coordinate = (1/100)*x
+    y_coordinate = (1/100)*y
+    E_magnitude = 0
+    
+    for i in range(n_tiles):
+      for j in range(n_tiles):
+        E_magnitude = E_magnitude + charge[i, j]*(1/(4*math.pi*8.8542))*(10**(-6)/np.sum(charge))/((x_coordinate-i*(1/n_tiles))**2 + (y_coordinate-j*(1/n_tiles))**2 + (0.1)**2)
+    a.append(E_magnitude)
+  E.append(a)
+
+x= np.linspace(-0.5,0.5,100)
+y= np.linspace(-0.5,0.5,100)
+XX, YY = np.meshgrid(x,y)
+plt.contourf(XX,YY,E)  
+plt.show()
