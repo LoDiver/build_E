@@ -1,10 +1,3 @@
-# build_E
-# Online Python compiler (interpreter) to run Python online.
-# Write Python 3 code in this online editor and run it.
-# Get started with interactive Python!
-# Supports Python Modules: builtins, math,pandas, scipy 
-# matplotlib.pyplot, numpy, operator, processing, pygal, random, 
-# re, string, time, turtle, urllib.request
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
@@ -43,6 +36,9 @@ def build_E_example(n_tiles):
 
     return capital_E
 
-plt.contourf(build_E_example(8), 1)
+n_tiles = 50
+x= np.linspace(-0.5,0.5,n_tiles)
+y= np.linspace(-0.5,0.5,n_tiles)
+XX, YY = np.meshgrid(x,y)
+plt.contourf(XX,YY, build_E_example(n_tiles), 1)  
 plt.show()
-print("h")
